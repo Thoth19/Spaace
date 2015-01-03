@@ -39,7 +39,6 @@ while lives > 0:
     while alive and level_counter < len(level_array):
         #need to figure out a way of encoding when enemies appear and where
         for i in range(len(level_array[level_counter])):
-            print len(level_array[level_counter])
             if level_array[level_counter][i] == 1:
                 enemy = EnemySprite((i*16,0),False, 0, (139,69,19), 10)
                 enemy_group.add(enemy)
@@ -91,6 +90,7 @@ while lives > 0:
         for danger in all_group:
             if alive and not(danger == player):
                 if danger.rect.colliderect(player.rect):
+                    all_group.remove(player)
                     alive = False
                     lives -= 1
                     

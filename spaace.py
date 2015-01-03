@@ -13,11 +13,11 @@ score = 0
 
 pygame.display.set_caption('Spaace: Level %d, Stage %d, Lives %d, Score %d' % (level, stage, lives, score))
 
-bullet_group=pygame.sprite.Group()
-enemy_group=pygame.sprite.Group()
-all_group=pygame.sprite.Group()
 
 while lives > 0:
+    bullet_group=pygame.sprite.Group()
+    enemy_group=pygame.sprite.Group()
+    all_group=pygame.sprite.Group()
 
     player = ShipSprite((X_MAX / 2, Y_MAX - 32))
     all_group.add(player)
@@ -36,6 +36,8 @@ while lives > 0:
         level_array.append(temp)
 
     #possibly make levels into objects?
+
+    count = 0 # to prevent bullet spam
     while alive and level_counter < len(level_array):
         #need to figure out a way of encoding when enemies appear and where
         for i in range(len(level_array[level_counter])):
@@ -57,11 +59,12 @@ while lives > 0:
                 mouse_pos = pygame.mouse.get_pos()
                 player.move(mouse_pos)
         pressed = pygame.key.get_pressed()
-        if pressed[pygame.K_SPACE]:
+        if pressed[pygame.K_SPACE] and count >= 5:
             bullet = BulletSprite((player.rect.x + 4,player.rect.y - 16),-1,0,2,(0,0,255))
             #blue bullets
             all_group.add(bullet)
             bullet_group.add(bullet)
+            count = 0
         if pressed[pygame.K_q]:
             pygame.display.quit()
             break
@@ -95,11 +98,14 @@ while lives > 0:
                     all_group.remove(player)
                     alive = False
                     lives -= 1
+                    pygame.time.wait(1000)
+                    
                     
             else:
                 # collisions with self don't matter
                 pass
         level_counter += 1
+        count += 1
         pygame.display.set_caption('Spaace: Level %d, Stage %d, Lives %d, Score %d' %(level, stage,lives, score))
         all_group.draw(screen)
         pygame.display.flip()

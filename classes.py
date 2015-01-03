@@ -15,6 +15,7 @@ class ShipSprite(pygame.sprite.Sprite):
         #store lives in main
         #bullet type can be stored here 
         self.bullet_type = 1
+        self.image.fill((0,255,0))
     def move(self, position):
         ''' moves to given position'''
         if position[0] + 16 > X_MAX:
@@ -31,7 +32,7 @@ class BulletSprite(pygame.sprite.Sprite):
     '''
     This is an instance of a bullet. 
     '''
-    def __init__(self, position, owner, direc, speed):
+    def __init__(self, position, owner, direc, speed, color):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([8,16])
         self.rect = self.image.get_rect()
@@ -40,6 +41,7 @@ class BulletSprite(pygame.sprite.Sprite):
         self.owner = owner # -1 is player, 1 is enemy, controls y-direc
         self.direc = direc # is x-velocity
         self.speed = speed # >1 float multiplier to speed of enemies
+        self.image.fill(color)
     def  update(self):
         '''
         moves the bullet every step
@@ -51,14 +53,15 @@ class EnemySprite(pygame.sprite.Sprite):
     '''
     This is the enemy ships/meteors
     '''
-    def __init__(self, position, fires, direction):
+    def __init__(self, position, fires, direction, color):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([16,16])
         self.rect = self.image.get_rect()
         self.rect.x=position[0]
         self.rect.y=position[1]
         self.fires = fires #boolean of whther it attacks
-        self.direc = direction #x-velocity 
+        self.direc = direction #x-velocity
+        self.image.fill(color)
     def update(self):
         '''
         moves the enemies every step

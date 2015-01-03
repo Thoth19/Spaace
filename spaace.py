@@ -14,6 +14,7 @@ score = 0
 pygame.display.set_caption('Spaace: Level %d, Stage %d, Lives %d, Score %d' % (level, stage, lives, score))
 
 
+reward_mult = 1 #bcbased on score which is cumulative over lives
 while lives > 0:
     bullet_group=pygame.sprite.Group()
     enemy_group=pygame.sprite.Group()
@@ -54,6 +55,12 @@ while lives > 0:
         screen.fill((0,0,0))
         all_group.update()
 
+        if score > 500 * reward_mult:
+            player.bullet_type = 2
+            reward_mult += 1
+            shots_with_power = 0
+        if player.bullet_type == 2 and shots_with_power > 10*reward_mult:
+            player.bullet_type = 1
         for event in pygame.event.get():
             if event.type != pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
@@ -71,7 +78,7 @@ while lives > 0:
 
         for enemy in enemy_group:
             if enemy.fires and random.randint(1,50)==10:
-                bullet = BulletSprite((enemy.rect.x,enemy.rect.y),1,0,2,(255,0,0))
+                bullet = BulletSprite((enemy.rect.x+4,enemy.rect.y),1,0,2,(255,0,0))
                 bullet_group.add(bullet)
                 all_group.add(bullet)
 
@@ -89,8 +96,17 @@ while lives > 0:
                         score += enemy.score
                         enemy_group.remove(enemy)
                         all_group.remove(enemy)
-                        bullet_group.remove(bullet)
-                        all_group.remove(bullet)
+                        if player.bullet_type == 1:
+                            bullet_group.remove(bullet)
+                            all_group.remove(bullet)
+                        elif player.bullet_type == 2:
+                            bull2 = BulletSprite((bullet.rect.x + 4,bullet.rect.y - 16),-1,5,2,(0,0,255))
+                            bull3 = BulletSprite((bullet.rect.x + 4,bullet.rect.y - 16),-1,-5,2,(0,0,255))
+                            bullet_group.add(bull2)
+                            bullet_group.add(bull3)
+                            all_group.add(bull2)
+                            all_group.add(bull3)
+                            shots_with_power += 1
                     
         for danger in all_group:
             if alive and not(danger == player):
@@ -99,7 +115,7 @@ while lives > 0:
                     alive = False
                     lives -= 1
                     pygame.time.wait(1000)
-                    
+
                     
             else:
                 # collisions with self don't matter

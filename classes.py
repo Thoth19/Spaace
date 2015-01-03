@@ -1,7 +1,7 @@
 import math, os, pygame
 X_MAX = 800
 Y_MAX = 600
-STEP_SIZE = 8
+STEP_SIZE = 4
 class ShipSprite(pygame.sprite.Sprite):
     '''
     This is the user controlled space ship in Spaace

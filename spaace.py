@@ -51,7 +51,7 @@ while lives > 0:
                 enemy_group.add(enemy)
                 all_group.add(enemy)
 
-        clock.tick(20)
+        clock.tick(30)
         screen.fill((0,0,0))
         all_group.update()
 

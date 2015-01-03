@@ -25,13 +25,38 @@ while lives > 0:
     alive = True
     level_counter = 0 # counter in array for enemies
     level_array = []
+    # POSSIBLE LEVEL 1
+    # for i in range(600):
+    #     temp = []
+    #     for j in range(50): #x distance across
+    #         if i%10 == 0 and j%5 == 0:
+    #             temp.append(1)
+    #         elif i % 28 ==0 and j % 10 ==0:
+    #             temp.append(2)
+    #         else:
+    #             temp.append(0)
+    #     level_array.append(temp)
+
+    # POSSIBLE LEVEL 2
+    # for i in range(600):
+    #     temp = []
+    #     for j in range(50):
+    #         if abs(i % 20) <= 1 and abs(i % 51 - j) <= 1:
+    #             if random.randint(1,5) == 5:
+    #                 temp.append(2)
+    #             else:
+    #                 temp.append(1)
+    #         else:
+    #             temp.append(0)
+    #     level_array.append(temp)
+
+    # POSSIBLE LEVEL 3
     for i in range(600):
         temp = []
-        for j in range(50): #x distance across
-            if i%10 == 0 and j%5 == 0:
-                temp.append(1)
-            elif i % 28 ==0 and j % 10 ==0:
+        for j in range(50):
+            if abs(i % 20) <= 1 and abs(i % 51 - j) <= 1:
                 temp.append(2)
+                
             else:
                 temp.append(0)
         level_array.append(temp)

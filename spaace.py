@@ -86,6 +86,8 @@ while lives > 0:
                         score += enemy.score
                         enemy_group.remove(enemy)
                         all_group.remove(enemy)
+                        bullet_group.remove(bullet)
+                        all_group.remove(bullet)
                     
         for danger in all_group:
             if alive and not(danger == player):

@@ -53,7 +53,7 @@ class EnemySprite(pygame.sprite.Sprite):
     '''
     This is the enemy ships/meteors
     '''
-    def __init__(self, position, fires, direction, color):
+    def __init__(self, position, fires, direction, color, score):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([16,16])
         self.rect = self.image.get_rect()
@@ -61,6 +61,7 @@ class EnemySprite(pygame.sprite.Sprite):
         self.rect.y=position[1]
         self.fires = fires #boolean of whther it attacks
         self.direc = direction #x-velocity
+        self.score = score
         self.image.fill(color)
     def update(self):
         '''

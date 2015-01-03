@@ -1,0 +1,69 @@
+import math, os, pygame
+X_MAX = 800
+Y_MAX = 600
+STEP_SIZE = 8
+class ShipSprite(pygame.sprite.Sprite):
+    '''
+    This is the user controlled space ship in Spaace
+    '''
+    def __init__(self, position):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([16,16])
+        self.rect = self.image.get_rect()
+        self.rect.x=position[0]
+        self.rect.y=position[1]
+        #store lives in main
+        #bullet type can be stored here 
+        self.bullet_type = 1
+    def move(self, position):
+        ''' moves to given position'''
+        if position[0] + 16 > X_MAX:
+            # The ship itself is 16 pixels long
+            self.rect.x = X_MAX -16
+        else:
+            self.rect.x = position[0]
+    def update(self):
+        '''
+        Empty function so that all sprite groups can be updated
+        '''
+        pass
+class BulletSprite(pygame.sprite.Sprite):
+    '''
+    This is an instance of a bullet. 
+    '''
+    def __init__(self, position, owner, direc, speed):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([8,16])
+        self.rect = self.image.get_rect()
+        self.rect.x=position[0]
+        self.rect.y=position[1]
+        self.owner = owner # -1 is player, 1 is enemy, controls y-direc
+        self.direc = direc # is x-velocity
+        self.speed = speed # >1 float multiplier to speed of enemies
+    def  update(self):
+        '''
+        moves the bullet every step
+        '''
+        self.rect.y += self.owner * STEP_SIZE * self.speed#moves up/down
+        self.rect.x += self.direc
+        #will delete the objects when they go off screen in main
+class EnemySprite(pygame.sprite.Sprite):
+    '''
+    This is the enemy ships/meteors
+    '''
+    def __init__(self, position, fires, direction):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([16,16])
+        self.rect = self.image.get_rect()
+        self.rect.x=position[0]
+        self.rect.y=position[1]
+        self.fires = fires #boolean of whther it attacks
+        self.direc = direction #x-velocity 
+    def update(self):
+        '''
+        moves the enemies every step
+        '''
+        self.rect.y += STEP_SIZE
+        self.rect.x += self.direc
+        pass
+    #need to find some way to make more interesting attack patterns

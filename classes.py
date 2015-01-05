@@ -16,6 +16,7 @@ class ShipSprite(pygame.sprite.Sprite):
         #bullet type can be stored here 
         self.bullet_type = 1
         self.image.fill((0,255,0))
+        self.god = False
     def move(self, position):
         ''' moves to given position'''
         if position[0] + 16 > X_MAX:
@@ -53,7 +54,7 @@ class EnemySprite(pygame.sprite.Sprite):
     '''
     This is the enemy ships/meteors
     '''
-    def __init__(self, position, length, width, fires, direction, color, score):
+    def __init__(self, position,fires, direction, color, score, length = 16, width = 16):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([length,width])
         self.rect = self.image.get_rect()
@@ -71,6 +72,20 @@ class EnemySprite(pygame.sprite.Sprite):
         self.rect.x += self.direc
         pass
     #need to find some way to make more interesting attack patterns
+class CrateSprite(pygame.sprite.Sprite):
+    '''
+    objects that grant powerups or score boosts
+    '''
+    def __init__(self, position, contains, color):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([16,16])
+        self.rect = self.image.get_rect()
+        self.rect.x=position[0]
+        self.rect.y=position[1]
+        self.image.fill(color)
+        self.contains = contains
+    def update(self):
+        self.rect.y += 3*STEP_SIZE
 
 # TODO
 # make enemy class have reasonably different sizes and shapes

@@ -51,7 +51,7 @@ while lives > 0:
     #     level_array.append(temp)
 
     # POSSIBLE LEVEL 3
-    for i in range(600):
+    for i in range(600*4):
         temp = []
         for j in range(50):
             if abs(i % 20) <= 1 and abs(i % 51 - j) <= 1:

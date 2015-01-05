@@ -2,6 +2,7 @@ import math, os, pygame, random
 from classes import *
 #initialize
 
+mouse = raw_input("mouse or keys?")
 pygame.init()
 screen = pygame.display.set_mode([800,600])
 clock = pygame.time.Clock()
@@ -15,6 +16,9 @@ pygame.display.set_caption('Spaace: Level %d, Stage %d, Lives %d, Score %d' % (l
 
 
 reward_mult = 1 #bcbased on score which is cumulative over lives
+
+
+
 while lives > 0:
     bullet_group=pygame.sprite.Group()
     enemy_group=pygame.sprite.Group()
@@ -51,11 +55,11 @@ while lives > 0:
     #     level_array.append(temp)
 
     # POSSIBLE LEVEL 3
-    for i in range(600):
+    for i in range(600*4):
         temp = []
         for j in range(50):
             if abs(i % 20) <= 1 and abs(i % 51 - j) <= 1:
-                temp.append(2)
+                temp.append(0)
                 
             else:
                 temp.append(0)
@@ -87,7 +91,7 @@ while lives > 0:
         if player.bullet_type == 2 and shots_with_power > 10*reward_mult:
             player.bullet_type = 1
         for event in pygame.event.get():
-            if event.type != pygame.MOUSEBUTTONDOWN:
+            if event.type != pygame.MOUSEBUTTONDOWN and mouse == 1:
                 mouse_pos = pygame.mouse.get_pos()
                 player.move(mouse_pos)
         pressed = pygame.key.get_pressed()
@@ -100,6 +104,10 @@ while lives > 0:
         if pressed[pygame.K_q]:
             pygame.display.quit()
             break
+        if pressed[pygame.K_LEFT] and mouse ==2:
+            player.move((player.rect.x - 1,player.rect.y))
+        if pressed[pygame.K_RIGHT] and mouse ==2:
+            player.move((player.rect.x + 1,player.rect.y))
 
         for enemy in enemy_group:
             if enemy.fires and random.randint(1,50)==10:

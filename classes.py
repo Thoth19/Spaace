@@ -92,10 +92,10 @@ class Alien1Sprite(EnemySprite):
         self.direc = 0 #x-velocity
         self.score = 30
         self.image.fill((148,0,211))
-        self.refactory = 100
+        self.refactory = 10
         self.charge = 0 
     def fire(self):
-        self.charge = 0
+        # self.charge = 0
         bullet = BulletSprite((self.rect.x+4,self.rect.y),1,0,2,(255,0,0))
         return bullet
 

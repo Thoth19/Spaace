@@ -18,6 +18,7 @@ reward_mult = 1 #bcbased on score which is cumulative over lives
 while lives > 0:
     bullet_group=pygame.sprite.Group()
     enemy_group=pygame.sprite.Group()
+    crate_group=pygame.sprite.Group()
     all_group=pygame.sprite.Group()
 
     player = ShipSprite((X_MAX / 2, Y_MAX - 32))
@@ -56,7 +57,7 @@ while lives > 0:
         for j in range(50):
             if abs(i % 20) <= 1 and abs(i % 51 - j) <= 1:
                 temp.append(2)
-                
+                      
             else:
                 temp.append(0)
         level_array.append(temp)
@@ -80,16 +81,22 @@ while lives > 0:
         screen.fill((0,0,0))
         all_group.update()
 
-        if score > 500 * reward_mult:
+        if score > 500 * reward_mult/5:
             player.bullet_type = 2
-            reward_mult += 1
+            
             shots_with_power = 0
         if player.bullet_type == 2 and shots_with_power > 10*reward_mult:
             player.bullet_type = 1
+        if score > 100 * reward_mult:
+            reward_mult += 1
+            crate = CrateSprite((random.randint(10,40)*16,0),"score37",(255,255,255)) 
+            all_group.add(crate)
+            crate_group.add(crate)
+
         for event in pygame.event.get():
             if event.type != pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                player.move(mouse_pos)
+                player.move(mouse_pos)  
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_SPACE] and count >= 5:
             bullet = BulletSprite((player.rect.x + 4,player.rect.y - 16),-1,0,2,(0,0,255))
@@ -99,7 +106,12 @@ while lives > 0:
             count = 0
         if pressed[pygame.K_q]:
             pygame.display.quit()
+            lives = 0
             break
+        if pressed[pygame.K_s]:
+            score += 50
+        if pressed[pygame.K_g]:
+            player.god = not(player.god)
 
         for enemy in enemy_group:
             if enemy.fires and random.randint(1,50)==10:
@@ -135,11 +147,16 @@ while lives > 0:
                     
         for danger in all_group:
             if alive and not(danger == player):
-                if danger.rect.colliderect(player.rect):
+                if danger.rect.colliderect(player.rect) and not(danger in crate_group) and not(player.god):
                     all_group.remove(player)
                     alive = False
                     lives -= 1
                     pygame.time.wait(1000)
+                if danger.rect.colliderect(player.rect) and (danger in crate_group):
+                    all_group.remove(crate)
+                    crate_group.remove(crate)
+                    if "score" in crate.contains:
+                        score += int(crate.contains[5::])
 
                     
             else:
@@ -150,3 +167,4 @@ while lives > 0:
         pygame.display.set_caption('Spaace: Level %d, Stage %d, Lives %d, Score %d' %(level, stage,lives, score))
         all_group.draw(screen)
         pygame.display.flip()
+pygame.display.quit()

@@ -55,7 +55,7 @@ while lives > 0:
     for i in range(600*4):
         temp = []
         for j in range(50):
-            if abs(i % 20) <= 1 and abs(i % 51 - j) <= 1:
+            if abs(i % 20) == 1 and abs(i % 51 - j) == 1:
                 temp.append(2)
                       
             else:
@@ -73,7 +73,7 @@ while lives > 0:
                 enemy_group.add(enemy)
                 all_group.add(enemy)
             if level_array[level_counter][i] == 2:
-                enemy = EnemySprite((i*16,0),True, 0, (148,0,211), 30)
+                enemy = Alien1Sprite((i*16,0))
                 enemy_group.add(enemy)
                 all_group.add(enemy)
 
@@ -89,7 +89,7 @@ while lives > 0:
             player.bullet_type = 1
         if score > 100 * reward_mult:
             reward_mult += 1
-            crate = CrateSprite((random.randint(10,40)*16,0),"score37",(255,255,255)) 
+            crate = CrateSprite((random.randint(10,40)*16,0),(37,2,0),(255,255,255)) 
             all_group.add(crate)
             crate_group.add(crate)
 
@@ -114,10 +114,11 @@ while lives > 0:
             player.god = not(player.god)
 
         for enemy in enemy_group:
-            if enemy.fires and random.randint(1,50)==10:
-                bullet = BulletSprite((enemy.rect.x+4,enemy.rect.y),1,0,2,(255,0,0))
+            if enemy.fires and enemy.refactory == enemy.charge:
+                bullet = enemy.fires()
                 bullet_group.add(bullet)
                 all_group.add(bullet)
+                #problem if we want to fire multiple bullets from one alien
 
         for bullet in bullet_group:
             if X_MAX > bullet.rect.x < 0:
@@ -155,8 +156,11 @@ while lives > 0:
                 if danger.rect.colliderect(player.rect) and (danger in crate_group):
                     all_group.remove(crate)
                     crate_group.remove(crate)
-                    if "score" in crate.contains:
-                        score += int(crate.contains[5::])
+                    score += crate.contains[0]
+                    if crate.contains[1] != 1:
+                        player.bullet_type = 2
+                        shots_with_power = 0
+        
 
                     
             else:

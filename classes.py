@@ -53,9 +53,9 @@ class EnemySprite(pygame.sprite.Sprite):
     '''
     This is the enemy ships/meteors
     '''
-    def __init__(self, position, fires, direction, color, score):
+    def __init__(self, position, length, width, fires, direction, color, score):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface([16,16])
+        self.image = pygame.Surface([length,width])
         self.rect = self.image.get_rect()
         self.rect.x=position[0]
         self.rect.y=position[1]
@@ -71,3 +71,13 @@ class EnemySprite(pygame.sprite.Sprite):
         self.rect.x += self.direc
         pass
     #need to find some way to make more interesting attack patterns
+
+# TODO
+# make enemy class have reasonably different sizes and shapes
+# make enemyies have different fire patterns
+# consider inheritence? 
+# make powerup crates fall
+
+# make levels work nicely:
+#     possibly by takign most of the main and making it a function of a level class 
+#     save the levels to a file

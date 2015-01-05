@@ -7,11 +7,10 @@ screen = pygame.display.set_mode([800,600])
 clock = pygame.time.Clock()
 
 lives = 3
-level = 1
 stage = 1 #might not use these, but oh well
 score = 0
 
-pygame.display.set_caption('Spaace: Level %d, Stage %d, Lives %d, Score %d' % (level, stage, lives, score))
+pygame.display.set_caption('Spaace: Stage %d, Lives %d, Score %d' % (stage, lives, score))
 
 
 reward_mult = 1 #bcbased on score which is cumulative over lives
@@ -52,15 +51,29 @@ while lives > 0:
     #     level_array.append(temp)
 
     # POSSIBLE LEVEL 3
-    for i in range(600*4):
-        temp = []
-        for j in range(50):
-            if abs(i % 20) == 1 and abs(i % 51 - j) == 1:
-                temp.append(2)
-                      
-            else:
+    if stage == 1:
+        for i in range(600*2):
+            temp = []
+            for j in range(50):
+                if abs(i % 20) <= 2 and abs(i % 51 - j) <= 1:
+                    temp.append(1)
+                else:
+                    temp.append(0)
+            level_array.append(temp)
+        for i in range(10):
+            temp = []
+            for j in range(50):
                 temp.append(0)
-        level_array.append(temp)
+            level_array.append(temp)
+    if stage == 2:
+        for i in range(600*4):
+            temp = []
+            for j in range(50):
+                if abs(i % 20) <= 1 and abs(i % 51 - j) <= 1:
+                    temp.append(2)
+                else:
+                    temp.append(0)
+            level_array.append(temp)
 
     #possibly make levels into objects?
 
@@ -112,10 +125,13 @@ while lives > 0:
             score += 50
         if pressed[pygame.K_g]:
             player.god = not(player.god)
+        if pressed[pygame.K_l]:
+            level_counter = len(level_array)
+            stage += 1
 
         for enemy in enemy_group:
             if enemy.fires and enemy.refactory == enemy.charge:
-                bullet = enemy.fires()
+                bullet = enemy.fire()
                 bullet_group.add(bullet)
                 all_group.add(bullet)
                 #problem if we want to fire multiple bullets from one alien
@@ -168,7 +184,10 @@ while lives > 0:
                 pass
         level_counter += 1
         count += 1
-        pygame.display.set_caption('Spaace: Level %d, Stage %d, Lives %d, Score %d' %(level, stage,lives, score))
+        pygame.display.set_caption('Spaace: Stage %d, Lives %d, Score %d' %(stage,lives, score))
         all_group.draw(screen)
         pygame.display.flip()
+    if level_counter == len(level_array):
+        stage += 1
+        pygame.time.wait(1000)
 pygame.display.quit()

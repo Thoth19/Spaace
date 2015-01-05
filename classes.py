@@ -64,14 +64,42 @@ class EnemySprite(pygame.sprite.Sprite):
         self.direc = direction #x-velocity
         self.score = score
         self.image.fill(color)
+        self.refactory = 999
+        self.charge = 0
     def update(self):
         '''
         moves the enemies every step
         '''
         self.rect.y += STEP_SIZE
         self.rect.x += self.direc
-        pass
+        self. charge += 1
+        if self.charge == self.refactory:
+            return self.fire()
+        else:
+            return 0
+        
+    def fire(self):
+        return 0
     #need to find some way to make more interesting attack patterns
+class Alien1Sprite(EnemySprite):
+    def __init__(self, position):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([32,32])
+        self.rect = self.image.get_rect()
+        self.rect.x=position[0]
+        self.rect.y=position[1]
+        self.fires = True #boolean of whther it attacks
+        self.direc = 0 #x-velocity
+        self.score = 30
+        self.image.fill((148,0,211))
+        self.refactory = 100
+        self.charge = 0 
+    def fire(self):
+        self.charge = 0
+        bullet = BulletSprite((self.rect.x+4,self.rect.y),1,0,2,(255,0,0))
+        return bullet
+
+
 class CrateSprite(pygame.sprite.Sprite):
     '''
     objects that grant powerups or score boosts
@@ -83,7 +111,7 @@ class CrateSprite(pygame.sprite.Sprite):
         self.rect.x=position[0]
         self.rect.y=position[1]
         self.image.fill(color)
-        self.contains = contains
+        self.contains = contains #(score, bullet level, lives)
     def update(self):
         self.rect.y += 3*STEP_SIZE
 
@@ -96,3 +124,4 @@ class CrateSprite(pygame.sprite.Sprite):
 # make levels work nicely:
 #     possibly by takign most of the main and making it a function of a level class 
 #     save the levels to a file
+# consider rewrite ith heath?

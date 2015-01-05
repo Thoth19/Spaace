@@ -87,7 +87,7 @@ while lives > 0:
         if player.bullet_type == 2 and shots_with_power > 10*reward_mult:
             player.bullet_type = 1
         for event in pygame.event.get():
-            if event.type != pygame.MOUSEBUTTONDOWN:
+            if event.type != pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 player.move(mouse_pos)
         pressed = pygame.key.get_pressed()

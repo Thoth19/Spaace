@@ -117,9 +117,9 @@ class CrateSprite(pygame.sprite.Sprite):
 
 # TODO
 # make enemy class have reasonably different sizes and shapes
-# make enemyies have different fire patterns
-# consider inheritence? 
-# make powerup crates fall
+# make enemyies have different fire patterns implemented
+# consider inheritence? check
+# make powerup crates fall check
 
 # make levels work nicely:
 #     possibly by takign most of the main and making it a function of a level class 
